@@ -1,0 +1,42 @@
+type: task_block
+title: python_lib_0e3640
+icon: https://static.oomol.com/icons/python.png
+executor:
+  name: python_executor
+  entry: ./index.py
+inputs_def:
+  - handle: rows
+    serialize:
+      serializer: json
+      json_schema:
+        type: array
+        items:
+          type: object
+  - handle: fields
+    serialize:
+      serializer: json
+      json_schema:
+        type: array
+        items:
+          type: string
+  - handle: x_coordinate_name
+    serialize:
+      serializer: json
+      json_schema:
+        type: string
+  - handle: kinds
+    serialize:
+      serializer: json
+      json_schema:
+        type: array
+        items:
+          type: string
+  - handle: with_sum
+    optional: true
+    serialize:
+      serializer: json
+      json_schema:
+        type: string
+outputs_def:
+  - handle: data
+  - handle: x_coordinate
