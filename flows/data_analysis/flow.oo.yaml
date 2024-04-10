@@ -1,1 +1,68 @@
-nodes: []
+nodes:
+  [
+    {
+        task: excel::excel_reader,
+        node_id: bfaa6bb9-32da-4044-83fc-af15b67269c9,
+        inputs_from:
+          [
+            {
+                handle: file,
+                cache: { initial_value: /app/workspace/flows/data_analysis/data/中国历年发电量.xlsx }
+              },
+            { handle: disable_field_names, cache: { initial_value: false } }
+          ]
+      },
+    {
+        task: ../../blocks/python_lib_0e3640/block.oo.yaml,
+        node_id: 3640b57e-f45c-467c-9281-fc3c8b99adef,
+        inputs_from:
+          [
+            {
+                handle: rows,
+                from_node: [ { node_id: bfaa6bb9-32da-4044-83fc-af15b67269c9, output_handle: rows } ]
+              },
+            {
+                handle: fields,
+                from_node: [ { node_id: bfaa6bb9-32da-4044-83fc-af15b67269c9, output_handle: fields } ]
+              },
+            { handle: with_sum, cache: { initial_value: 总计 } },
+            { handle: x_coordinate_name, cache: { initial_value: 年份 } },
+            { handle: kinds, cache: { initial_value: [ 水电, 火电, 核电 ] } }
+          ],
+        title: Transform
+      },
+    {
+        task: matplotlib::plot,
+        node_id: 2d533a46-0f18-41e7-8f3c-c4656b434767,
+        inputs_from:
+          [
+            {
+                handle: data,
+                from_node: [ { node_id: 3640b57e-f45c-467c-9281-fc3c8b99adef, output_handle: data } ]
+              },
+            {
+                handle: x_coordinate,
+                from_node:
+                  [
+                    { node_id: 3640b57e-f45c-467c-9281-fc3c8b99adef, output_handle: x_coordinate }
+                  ]
+              },
+            { handle: title, cache: { initial_value: 中国历年发电量 } },
+            { handle: x_label, cache: { initial_value: 年份 } },
+            { handle: y_label, cache: { initial_value: 亿 kWh } },
+            { handle: width, cache: { initial_value: 10 } },
+            { handle: height, cache: { initial_value: 7 } }
+          ]
+      },
+    {
+        task: common::preview,
+        node_id: bcde505e-5695-48b6-bfe1-bd8d16c72f19,
+        inputs_from:
+          [
+            {
+                handle: file,
+                from_node: [ { node_id: 2d533a46-0f18-41e7-8f3c-c4656b434767, output_handle: image } ]
+              }
+          ]
+      }
+  ]
