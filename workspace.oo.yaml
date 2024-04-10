@@ -1,1 +1,6 @@
-null
+name: oomol example flows
+container:
+  scripts:
+    bootstrap: |
+      #!/bin/bash
+      set -e
