@@ -10,7 +10,8 @@ nodes:
                 cache: { initial_value: /app/workspace/flows/data_analysis/data/中国历年发电量.xlsx }
               },
             { handle: disable_field_names, cache: { initial_value: false } }
-          ]
+          ],
+        description: 从 Excel 文件读取数据
       },
     {
         task: ../../blocks/python_lib_0e3640/block.oo.yaml,
@@ -29,7 +30,8 @@ nodes:
             { handle: x_coordinate_name, cache: { initial_value: 年份 } },
             { handle: kinds, cache: { initial_value: [ 水电, 火电, 核电 ] } }
           ],
-        title: Transform
+        title: Transform,
+        description: 处理读到的数据，让它符合 Plot（下游）对格式的要求
       },
     {
         task: matplotlib::plot,
@@ -52,7 +54,8 @@ nodes:
             { handle: y_label, cache: { initial_value: 亿 kWh } },
             { handle: width, cache: { initial_value: 10 } },
             { handle: height, cache: { initial_value: 7 } }
-          ]
+          ],
+        description: Matplot 封装，生成图片
       },
     {
         task: common::preview,
@@ -63,6 +66,7 @@ nodes:
                 handle: file,
                 from_node: [ { node_id: 2d533a46-0f18-41e7-8f3c-c4656b434767, output_handle: image } ]
               }
-          ]
+          ],
+        description: 📈 根据 Excel 内容生成的折线图
       }
   ]
