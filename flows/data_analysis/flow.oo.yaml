@@ -58,8 +58,8 @@ nodes:
         description: Matplot 封装，生成图片
       },
     {
-        task: common::preview,
-        node_id: bcde505e-5695-48b6-bfe1-bd8d16c72f19,
+        task: common::image_preview,
+        node_id: 840f875e-b2bc-4ef3-9064-602a075cc37f,
         inputs_from:
           [
             {
