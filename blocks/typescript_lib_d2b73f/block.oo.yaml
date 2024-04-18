@@ -1,0 +1,9 @@
+type: task_block
+title: typescript_lib_d2b73f
+icon: https://static.oomol.com/icons/typescript.png
+executor:
+  name: node_executor
+  entry: ./index.ts
+inputs_def: []
+outputs_def:
+  - handle: out
