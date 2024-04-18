@@ -24,7 +24,7 @@ nodes:
               },
             {
                 handle: params,
-                from_node: [ { node_id: b73f6c72-a244-4a04-b2ff-fb8c01d2ac69, output_handle: out } ]
+                from_node: [ { node_id: 641bd6bd-5834-4511-85d5-5cd786432997, output_handle: out } ]
               }
           ],
         description: 问题模板，定义 AI 角色以处理用户问题
@@ -72,10 +72,31 @@ nodes:
         description: 使用 Open AI SDK 进行处理
       },
     {
-        task: ../../blocks/typescript_lib_d2b73f/block.oo.yaml,
-        node_id: b73f6c72-a244-4a04-b2ff-fb8c01d2ac69,
-        inputs_from: [],
-        title: Generate Question,
-        description: 生成问题用户的问题
+        task: language::python_script,
+        node_id: 641bd6bd-5834-4511-85d5-5cd786432997,
+        inputs_from:
+          [
+            {
+                handle: _OOMOL_OPTIONS,
+                cache:
+                  {
+                    initial_value:
+                      {
+                        content: "def main(_: dict, context):
+
+                          \  next_params = {
+
+                          \    \"question\":
+                          \"天空是什么颜色？大海是什么颜色？\",
+
+                          \  }
+
+                          \ 
+                          context.output(next_params, \"out\", True)\n"
+                      }
+                  }
+              }
+          ],
+        description: 用户输入的信息
       }
   ]
