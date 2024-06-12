@@ -1,9 +1,9 @@
 type: task_block
-title: python_lib_0e3640
-icon: https://static.oomol.com/icons/python.png
-executor:
-  name: python_executor
-  entry: ./index.py
+title: transform
+options:
+  mode: request
+  applet: ../../applets/main.oo.yaml
+  function: transform
 inputs_def:
   - handle: rows
     serialize:
@@ -12,6 +12,8 @@ inputs_def:
         type: array
         items:
           type: object
+          properties:
+            {}
   - handle: fields
     serialize:
       serializer: json
@@ -32,11 +34,26 @@ inputs_def:
         items:
           type: string
   - handle: with_sum
-    optional: true
     serialize:
       serializer: json
       json_schema:
         type: string
 outputs_def:
   - handle: data
+    serialize:
+      serializer: json
+      json_schema:
+        type:
+          - string
+          - number
+          - integer
+          - boolean
+          - object
+          - array
+          - "null"
+        ui:widget: any
   - handle: x_coordinate
+    serialize:
+      serializer: json
+ui:
+  default_width: 266
