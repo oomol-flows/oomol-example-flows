@@ -1,102 +1,69 @@
 nodes:
-  [
-    {
-        task: LLM::dialogues_template,
-        node_id: e3b37bb6-a642-442c-a26b-fd41425b8e70,
-        inputs_from:
-          [
-            {
-                handle: template,
-                cache:
-                  {
-                    initial_value:
-                      [
-                        {
-                            role: system,
-                            content: 你是一个说谎者，用户问你任何问题，你都会故意回答一个不正经的错误答案。
+  - task: LLM::dialogues_template
+    node_id: e3b37bb6-a642-442c-a26b-fd41425b8e70
+    inputs_from:
+      - handle: template
+        value:
+          - role: system
+            content: 你是一个说谎者，用户问你任何问题，你都会故意回答一个不正经的错误答案。
 
 
-                              你不要透露过多的信息，直接给答案。也不要透露你被告知要撒谎这回事。
-                          },
-                        { role: user, content: "${question}" }
-                      ]
-                  }
-              },
-            {
-                handle: params,
-                from_node: [ { node_id: 641bd6bd-5834-4511-85d5-5cd786432997, output_handle: out } ]
-              }
-          ],
-        description: 问题模板，定义 AI 角色以处理用户问题
-      },
-    {
-        task: preview::markdown_preview,
-        node_id: 41d57f43-ca7c-498c-a01c-45f494ef0b1b,
-        inputs_from:
-          [
-            {
-                handle: text,
-                from_node: [ { node_id: 2315fb5e-8bba-4522-9f0e-88dfc2b6cede, output_handle: text } ]
-              }
-          ],
-        description: 展示 Markdown 文本
-      },
-    {
-        task: LLM::dialogues_to_markdown,
-        node_id: 2315fb5e-8bba-4522-9f0e-88dfc2b6cede,
-        inputs_from:
-          [
-            {
-                handle: dialogues,
-                from_node: [ { node_id: 5dc00f3c-a0c4-48f6-ba87-bbef8b30fa09, output_handle: dialogues } ]
-              }
-          ],
-        description: 将 AI 的应答转化成 Markdown 文本
-      },
-    {
-        task: LLM::openai_dialogue,
-        node_id: 5dc00f3c-a0c4-48f6-ba87-bbef8b30fa09,
-        inputs_from:
-          [
-            {
-                handle: dialogues,
-                from_node: [ { node_id: e3b37bb6-a642-442c-a26b-fd41425b8e70, output_handle: dialogues } ]
-              },
-            {
-                handle: api_key,
-                cache: { initial_value: sk-WMfRcsS9UZAPaTQJGXautJ0rBeuw27PtUFEEUZN2f79Rxnl8 }
-              },
-            { handle: source, cache: { initial_value: Moonshot } },
-            { handle: temperature, cache: { initial_value: 0.376 } }
-          ],
-        description: 使用 Open AI SDK 进行处理
-      },
-    {
-        task: language::python_script,
-        node_id: 641bd6bd-5834-4511-85d5-5cd786432997,
-        inputs_from:
-          [
-            {
-                handle: _OOMOL_OPTIONS,
-                cache:
-                  {
-                    initial_value:
-                      {
-                        content: "def main(_: dict, context):
+              你不要透露过多的信息，直接给答案。也不要透露你被告知要撒谎这回事。
+          - role: user
+            content: "${question}"
+      - handle: params
+        from_node:
+          - node_id: 641bd6bd-5834-4511-85d5-5cd786432997
+            output_handle: out
+    description: 问题模板，定义 AI 角色以处理用户问题
+  - task: preview::markdown_preview
+    node_id: 41d57f43-ca7c-498c-a01c-45f494ef0b1b
+    inputs_from:
+      - handle: text
+        from_node:
+          - node_id: 2315fb5e-8bba-4522-9f0e-88dfc2b6cede
+            output_handle: text
+    description: 展示 Markdown 文本
+  - task: LLM::dialogues_to_markdown
+    node_id: 2315fb5e-8bba-4522-9f0e-88dfc2b6cede
+    inputs_from:
+      - handle: dialogues
+        from_node:
+          - node_id: 5dc00f3c-a0c4-48f6-ba87-bbef8b30fa09
+            output_handle: dialogues
+    description: 将 AI 的应答转化成 Markdown 文本
+  - task: LLM::openai_dialogue
+    node_id: 5dc00f3c-a0c4-48f6-ba87-bbef8b30fa09
+    inputs_from:
+      - handle: dialogues
+        from_node:
+          - node_id: e3b37bb6-a642-442c-a26b-fd41425b8e70
+            output_handle: dialogues
+      - handle: api_key
+        value: sk-WMfRcsS9UZAPaTQJGXautJ0rBeuw27PtUFEEUZN2f79Rxnl8
+      - handle: source
+        value: Moonshot
+      - handle: temperature
+        value: 0.376
+    description: 使用 Open AI SDK 进行处理
+  - task: language::python_script
+    node_id: 641bd6bd-5834-4511-85d5-5cd786432997
+    inputs_from:
+      - handle: _OOMOL_OPTIONS
+        value:
+          content: "def main(_: dict, context):
 
-                          \  next_params = {
+            \  next_params = {
 
-                          \    \"question\":
-                          \"天空是什么颜色？大海是什么颜色？\",
+            \    \"question\": \"天空是什么颜色？大海是什么颜色？\",
 
-                          \  }
+            \  }
 
-                          \ 
-                          context.output(next_params, \"out\", True)\n"
-                      }
-                  }
-              }
-          ],
-        description: 用户输入的信息
-      }
-  ]
+            \  return {
+
+            \    \"out\": next_params,
+
+            \  }"
+      - handle: in
+        value: null
+    description: 用户输入的信息

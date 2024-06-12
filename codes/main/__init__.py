@@ -1,4 +1,4 @@
-def main(inputs: dict, context):
+def transform(inputs: dict):
   rows = inputs["rows"]
   kinds = inputs["kinds"]
   x_coordinate_name = inputs["x_coordinate_name"]
@@ -38,6 +38,7 @@ def main(inputs: dict, context):
         sum_data[i] += value
     data_dict[inputs["with_sum"]] = sum_data
 
-  context.output(data_dict, "data", False)
-  context.output(x_coordinate, "x_coordinate", False)
-  context.done()
+  return {
+    "data": data_dict,
+    "x_coordinate": x_coordinate,
+  }
