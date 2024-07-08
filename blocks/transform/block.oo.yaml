@@ -1,8 +1,8 @@
 type: task_block
 title: transform
-options:
-  mode: request
-  applet: ../../applets/main.oo.yaml
+executor:
+  name: python_executor
+  entry: ../../codes/main/__init__.py
   function: transform
 inputs_def:
   - handle: rows
